@@ -25,6 +25,7 @@
         "webpack-cli": "^3.3.12"
     },
     "dependencies": {
+        "moment": "^2.27.0",
         "webpack": "^4.44.1"
     }
 }

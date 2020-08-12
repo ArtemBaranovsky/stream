@@ -1,12 +1,20 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Home page</div>
+        <div class="columns">
+            <div class="column">
+                <div class="message" v-for="status in statuses">
+                    <div class="message-header">
+<!--                        Joe said ...-->
+                        <p>
+                            {{ status.user.name }} said ...
+                        </p>
+                        <p>
+<!--                            A moment ago ...-->
+                            {{ postedOn(status) }}
+                        </p>
+                    </div>
 
-                    <div class="panel-body">
-                        Home page.
+                    <div class="message-body" v-text="status.body">
                     </div>
                 </div>
             </div>
@@ -15,10 +23,26 @@
 </template>
 
 <script>
+import moment from 'moment';
+import Status from '../models/Status';
 export default {
     name: "Home",
-    mounted() {
-        console.warn('Component mounted.')
+    data() {
+        return {
+            statuses: []
+        }
+    },  // postedOn(status)
+    created() {
+        // fire off an ajax request to fetch all of the statuses
+        // axios.get('/statuses')
+        Status.all(statuses => this.statuses = statuses);
+        // .then(response => this.statuses = response.data);
+        // .then(({data}) => this.statuses = data);  // ES2015 collection destructuring
+    },
+    methods: {
+        postedOn(status) {
+            return moment(status.created_at).fromNow();
+        }
     }
 }
 </script>
